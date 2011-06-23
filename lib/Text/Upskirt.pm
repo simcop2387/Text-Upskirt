@@ -1,11 +1,21 @@
-use strict;
-use warnings;
-
 package Text::Upskirt;
     # ABSTRACT: turns baubles into trinkets
 
+use strict;
+use warnings;
 use 5.012003;
 use Carp;
+
+use constant {HTML_SKIP_HTML => (1 << 0),
+             HTML_SKIP_STYLE => (1 << 1),
+             HTML_SKIP_IMAGES => (1 << 2),
+             HTML_SKIP_LINKS => (1 << 3),
+             HTML_EXPAND_TABS => (1 << 5),
+             HTML_SAFELINK => (1 << 7),
+             HTML_TOC => (1 << 8),
+             HTML_HARD_WRAP => (1 << 9),
+             HTML_GITHUB_BLOCKCODE => (1 << 10),
+             HTML_USE_XHTML => (1 << 11)};
 
 require Exporter;
 use AutoLoader;
@@ -27,11 +37,18 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
 	MKDEXT_SPACE_HEADERS
 	MKDEXT_STRIKETHROUGH
 	MKDEXT_TABLES
-	UPSKIRT_VER_MAJOR
-	UPSKIRT_VER_MINOR
-	UPSKIRT_VER_REVISION
+        HTML_SKIP_HTML
+        HTML_SKIP_STYLE
+        HTML_SKIP_IMAGES
+        HTML_SKIP_LINKS
+        HTML_EXPAND_TABS
+        HTML_SAFELINK
+        HTML_TOC
+        HTML_HARD_WRAP
+        HTML_GITHUB_BLOCKCODE
+        HTML_USE_XHTML
 ) ],
- 'exten' => [ qw (
+ 'ext' => [ qw (
         MKDEXT_AUTOLINK
         MKDEXT_FENCED_CODE
         MKDEXT_LAX_HTML_BLOCKS
@@ -39,7 +56,21 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
         MKDEXT_SPACE_HEADERS
         MKDEXT_STRIKETHROUGH
         MKDEXT_TABLES
-)], );
+)],
+ 'html' => [ qw (
+        HTML_SKIP_HTML
+        HTML_SKIP_STYLE
+        HTML_SKIP_IMAGES
+        HTML_SKIP_LINKS
+        HTML_EXPAND_TABS
+        HTML_SAFELINK
+        HTML_TOC
+        HTML_HARD_WRAP
+        HTML_GITHUB_BLOCKCODE
+        HTML_USE_XHTML
+)],
+
+ );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
@@ -51,10 +82,18 @@ our @EXPORT = qw(
 	MKDEXT_SPACE_HEADERS
 	MKDEXT_STRIKETHROUGH
 	MKDEXT_TABLES
-	UPSKIRT_VER_MAJOR
-	UPSKIRT_VER_MINOR
-	UPSKIRT_VER_REVISION
+        HTML_SKIP_HTML
+        HTML_SKIP_STYLE
+        HTML_SKIP_IMAGES
+        HTML_SKIP_LINKS
+        HTML_EXPAND_TABS
+        HTML_SAFELINK
+        HTML_TOC
+        HTML_HARD_WRAP
+        HTML_GITHUB_BLOCKCODE
+        HTML_USE_XHTML
 );
+
 
 sub AUTOLOAD {
     # This AUTOLOAD is used to 'autoload' constants from the constant()
