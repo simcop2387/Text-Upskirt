@@ -8,20 +8,19 @@
 use strict;
 use warnings;
 
-use Test::More tests => 2;
-BEGIN { use_ok('Text::Upskirt::Markdown') };
+use Data::Dumper;
 
+use Test::More tests => 3;
+BEGIN { use_ok('Text::Upskirt') };
 
 my $fail = 0;
 foreach my $constname (qw(
-	MKDA_EMAIL MKDA_NORMAL MKDA_NOT_AUTOLINK MKDEXT_AUTOLINK
-	MKDEXT_FENCED_CODE MKDEXT_LAX_HTML_BLOCKS MKDEXT_NO_INTRA_EMPHASIS
-	MKDEXT_SPACE_HEADERS MKDEXT_STRIKETHROUGH MKDEXT_TABLES
-	MKD_LIST_ORDERED MKD_LI_BLOCK MKD_TABLE_ALIGN_CENTER MKD_TABLE_ALIGN_L
-	MKD_TABLE_ALIGN_R UPSKIRT_VER_MAJOR UPSKIRT_VER_MINOR
+        MKDEXT_AUTOLINK MKDEXT_FENCED_CODE MKDEXT_LAX_HTML_BLOCKS MKDEXT_NO_INTRA_EMPHASIS
+	MKDEXT_SPACE_HEADERS MKDEXT_STRIKETHROUGH
+	UPSKIRT_VER_MAJOR UPSKIRT_VER_MINOR
 	UPSKIRT_VER_REVISION)) {
   next if (eval "my \$a = $constname; 1");
-  if ($@ =~ /^Your vendor has not defined Text::Upskirt::Markdown macro $constname/) {
+  if ($@ =~ /^Your vendor has not defined Text::Upskirt macro $constname/) {
     print "# pass: $@";
   } else {
     print "# fail: $@";
@@ -44,5 +43,19 @@ Testing
 * Bar
 EOF
 
-my $out = Text::Upskirt::Markdown::markdown($in);
-ok($out ne "");
+my $rendered = << 'EOF';
+<h1>Testing</h1>
+
+<ul>
+<li>Foo</li>
+<li>Bar</li>
+</ul>
+EOF
+
+my $out = Text::Upskirt::markdown($in);
+
+ok($out eq $rendered, "Simple output");
+
+$out = Text::Upskirt::smartypants($in);
+
+print STDERR $out;
