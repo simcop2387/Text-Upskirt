@@ -36,3 +36,13 @@ ok( $fail == 0 , 'Constants' );
 # Insert your test code below, the Test::More module is use()ed here so read
 # its man page ( perldoc Test::More ) for help writing this test script.
 
+my $in = << 'EOF';
+Testing
+=======
+
+* Foo
+* Bar
+EOF
+
+my $out = Text::Upskirt::Markdown::markdown($in);
+ok($out ne "");

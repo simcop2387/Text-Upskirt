@@ -1,10 +1,10 @@
-package Text::Upskirt::Markdown;
+use strict;
+use warnings;
 
+package Text::Upskirt::Markdown;
     # ABSTRACT: turns baubles into trinkets
 
 use 5.012003;
-use strict;
-use warnings;
 use Carp;
 
 require Exporter;
@@ -63,8 +63,6 @@ our @EXPORT = qw(
 	UPSKIRT_VER_REVISION
 );
 
-our $VERSION = '0.01';
-
 sub AUTOLOAD {
     # This AUTOLOAD is used to 'autoload' constants from the constant()
     # XS function.
@@ -89,7 +87,7 @@ sub AUTOLOAD {
 }
 
 require XSLoader;
-XSLoader::load('Text::Upskirt::Markdown', $VERSION);
+XSLoader::load('Text::Upskirt::Markdown', $Text::Upskirt::Markdown::VERSION);
 
 # Preloaded methods go here.
 
