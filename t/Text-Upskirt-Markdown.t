@@ -21,7 +21,7 @@ foreach my $constname (qw(
         HTML_EXPAND_TABS HTML_SAFELINK HTML_TOC HTML_HARD_WRAP
         HTML_GITHUB_BLOCKCODE HTML_USE_XHTML
 )) {
-  next if (eval "my \$a = $constname; 1");
+  next if (eval "use Text::Upskirt qw/".$constname."/; my \$a = $constname; 1");
   if ($@ =~ /^Your vendor has not defined Text::Upskirt macro $constname/) {
     print "# pass: $@";
   } else {
