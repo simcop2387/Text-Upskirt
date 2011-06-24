@@ -141,9 +141,7 @@ and $fancyhtml has had smart quotes and things added to look like this
 
 =head1 Functions
 
-=over 12
-
-=item C<markdown>
+=head2 markdown
 
     $html = markdown($input, $extensions, $html_options)
 
@@ -151,13 +149,15 @@ C<markdown> takes it's input as a string and returns the rendered HTML output.
 
 Both $extensions and $html_options are optional and default to nothing.
 
-=head2 Extensions
-=over 24
-=item MKDEXT_AUTOLINK
+=head3 Extensions
+
+=over 8
+
+=item C<MKDEXT_AUTOLINK>
 
 Automatically create links from urls and email addresses.
 
-=item MKDEXT_FENCED_CODE
+=item C<MKDEXT_FENCED_CODE>
 
 Allow for fenced code blocks using B<~> and B<`>.  This lets you do code blocks without indention which can make copy-paste easier after the fact.
 
@@ -182,23 +182,23 @@ Allow for fenced code blocks using B<~> and B<`>.  This lets you do code blocks 
 NOTES:
     If you plan on using C<smartypants> you may encounter issues if you attempt to use the ``fancy'' quote style exhibited there.
 
-=item MKDEXT_LAX_HTML_BLOCKS
+=item C<MKDEXT_LAX_HTML_BLOCKS>
 
 Allow HTML tags inside paragraphs without being surrounded by newlines.
 
-=item MKDEXT_NO_INTRA_EMPHASIS
+=item C<MKDEXT_NO_INTRA_EMPHASIS>
 
 Avoid turning text like C<my_awesome_function> into C<E<lt>emE<gt>awesomeE<lt>/emE<gt>function>.  You will need to escape phrases as C<I like it when you say, "_I love you_.">
 
-=item MKDEXT_SPACE_HEADERS
+=item C<MKDEXT_SPACE_HEADERS>
 
 Force a space between header hashes and the header itself
 
-=item MKDEXT_STRIKETHROUGH
+=item C<MKDEXT_STRIKETHROUGH>
 
 Let you make strikethroughs by surrounding text with ~~.
 
-=item MKDEXT_TABLES
+=item C<MKDEXT_TABLES>
 
 Let you create tables similar to the PHP Markdown Extra
 
@@ -209,54 +209,84 @@ Let you create tables similar to the PHP Markdown Extra
 
 =back
 
-=head2 Html Options
+=head3 Html Options
 
-=over 24
-=item HTML_SKIP_HTML
+=over 8
+
+=item C<HTML_SKIP_HTML>
 
 Don't output any of the boilerplate HTML tags at the start of the document
 
-=item HTML_SKIP_STYLE
+=item C<HTML_SKIP_STYLE>
 
 Don't add any C<E<lt>styleE<gt>> tags to the output
 
-=item HTML_SKIP_IMAGES
+=item C<HTML_SKIP_IMAGES>
 
 Don't process any image markdown and remove any C<E<lt>imgE<gt>> tags from the output
 
-=item HTML_SKIP_LINKS
+=item C<HTML_SKIP_LINKS>
 
 Don't process any link markdown and remove any C<E<lt>aE<gt>> tags from the output
 
-=item HTML_EXPAND_TABS
+=item C<HTML_EXPAND_TABS>
 
 Does not appear to be used in the code.
 
-=item HTML_SAFELINK
+=item C<HTML_SAFELINK>
 
 Don’t make hyperlinks from links that have unknown URL types.
 
-=item HTML_TOC
+=item C<HTML_TOC>
 
 Build a table of contents on the top of the output
 
-=item HTML_HARD_WRAP
+=item C<HTML_HARD_WRAP>
 
 Treat newlines in paragraphs as real line breaks, github style.
 
-=item HTML_GITHUB_BLOCKCODE
+=item C<HTML_GITHUB_BLOCKCODE>
 
 Don't include any extra CSS for code blocks
 
-=item HTML_USE_XHTML
+=item C<HTML_USE_XHTML>
 
 Generate XHTML 1.0 compliant tags
 
 =back
 
-=item C<smartypants>
+=head2 smartypants
 
     $html = smartpants($input)
-    
+
 C<smartypants> takes input as a string and returns the fancy HTML output.
 You can read a bit more about smartypants at L<http://daringfireball.net/projects/smartypants/>.
+
+=head1 UPSKIRT
+
+Upskirt is a fast, robust Markdown parsing library that doesn't suck,  Created by Natacha Porté.  This module is a set of bindings for it.  It is bundled along with the module and is seperately licensed as specified below.
+
+  Copyright (c) 2008, Natacha Porté
+  
+  Permission to use, copy, modify, and distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+  
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+And while the sources are available with the module, you're probably going to have a nicer time grabbing them from the github repository for Upskirt at L<https://github.com/tanoku/upskirt>
+
+=head1 LICENSE
+
+This module is available under the Artistic 2.0 license as available at L<http://www.perlfoundation.org/artistic_license_2_0>
+Copyright Ryan Voots 2011.
+
+=head1 SEE ALSO
+
+  * L<https://github.com/tanoku/upskirt>
