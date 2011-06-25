@@ -111,6 +111,10 @@ XSLoader::load('Text::Upskirt', $Text::Upskirt::VERSION);
 
 1;
 __END__
+=encoding utf8
+=for comment I really hope this doesn't break shit but I want unicode!
+
+=for html <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 =head1 SYNOPSIS
 
@@ -139,7 +143,7 @@ and $fancyhtml has had smart quotes and things added to look like this
     <h1>Installation</h1>
     
     <p>The simplest way to install this is with cpanm!
-    Thanks to &lsquo;Natacha Porté&rsquo; and any other contributors for Upskirt</p>
+    Thanks to &lsquo;Natacha Porté&rsquo; and other contributors for Upskirt</p>
 
 =head1 Functions
 
@@ -149,7 +153,7 @@ and $fancyhtml has had smart quotes and things added to look like this
 
 C<markdown> takes it's input as a string and returns the rendered HTML output.
 
-Both $extensions and $html_options are optional and default to nothing.
+Both $extensions and $html_options are optional bitfields and default to no extras.
 
 =head3 Extensions
 
@@ -237,7 +241,7 @@ Does not appear to be used in the code.
 
 =item C<HTML_SAFELINK>
 
-Don’t make hyperlinks from links that have unknown URL types.
+Don't make hyperlinks from links that have unknown URL types.
 
 =item C<HTML_TOC>
 
@@ -283,6 +287,13 @@ Upskirt is a fast, robust Markdown parsing library that doesn't suck,  Created b
   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 And while the sources are available with the module, you're probably going to have a nicer time grabbing them from the github repository for Upskirt at L<https://github.com/tanoku/upskirt>
+This version at github also has the work of a number of other contributors including but not limited to:
+
+ * Vicent Martí
+ * Ben Noordhuis
+ * Bruno Michel
+
+The original version of the library is also available at L<http://fossil.instinctive.eu/libupskirt/index>
 
 =head1 LICENSE
 
@@ -292,3 +303,4 @@ Copyright Ryan Voots 2011.
 =head1 SEE ALSO
 
   * L<https://github.com/tanoku/upskirt>
+  * L<http://fossil.instinctive.eu/libupskirt/index>
