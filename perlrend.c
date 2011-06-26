@@ -23,6 +23,7 @@
 #include "markdown.h"
 #include "html.h"
 #include "buffer.h"
+#include "perlrend.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -100,37 +101,37 @@
 
 // block level
 void PERLREND_TXTTXT(blockcode)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_TXT(blockquote)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_TXT(blockhtml)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_TXTINT(header)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_NONE(hrule)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_TXTINT(list)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_TXTINT(listitem)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_TXT(paragraph)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_TXT(table)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_TXTINT(tablecell)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 void PERLREND_TXT(tablerow)
-     PERLEND_VOIDEND
+     PERLREND_VOIDEND
 
 // span level
 int perlrndr_autolink(struct buf *ob, struct buf *text, enum mkd_autolink type, void *opaque) {
@@ -174,7 +175,6 @@ void PERLREND_TXT(entity)
 void PERLREND_TXT(normal_text)
      PERLREND_VOIDEND
 
-
 void PERLREND_NONE(doc_header)
      PERLREND_VOIDEND
 
@@ -182,12 +182,11 @@ void PERLREND_NONE(doc_header)
 void PERLREND_NONE(doc_footer)
      PERLREND_VOIDEND
 
-
-static const struct mkd_renderer perlrender_markdown = {
+const struct mkd_renderer perlrender_markdown = {
   /* block level callbacks */
   perlrndr_blockcode,
   perlrndr_blockquote,
-  perlrndr_raw_block,
+  perlrndr_blockhtml,
   perlrndr_header,
   perlrndr_hrule,
   perlrndr_list,
@@ -205,7 +204,7 @@ static const struct mkd_renderer perlrender_markdown = {
   perlrndr_image,
   perlrndr_linebreak,
   perlrndr_link,
-  perlrndr_raw_html,
+  perlrndr_raw_html_tag,
   perlrndr_triple_emphasis,
   perlrndr_strikethrough,
 
