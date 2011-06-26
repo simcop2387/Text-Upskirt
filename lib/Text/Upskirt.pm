@@ -6,6 +6,8 @@ use warnings;
 use 5.012003;
 use Carp;
 use Scalar::Util qw/blessed/;
+use Data::Dumper;
+use diagnostics;
 
 use constant {HTML_SKIP_HTML => (1 << 0),
               HTML_SKIP_STYLE => (1 << 1),
@@ -80,10 +82,15 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT;
 
 sub markdown {
-  if (blessed $_[0] && $_[0]->isa("Text::Upskirt::Renderer")) {
-    markdown_custom(@_);
+  #ok i've got something wrong here, i suspect it's in the XS or something. i don't get it
+  # i get this message.
+  # Use of uninitialized value in subroutine entry at Text/Upskirt.pm line XXX
+  no warnings 'uninitialized';
+
+  if (blessed($_[0]) && $_[0]->isa("Text::Upskirt::Renderer")) {
+    &markdown_custom; # line XXX
   } else {
-    markdown_default(@_);
+    &markdown_default;
   }
 }
 

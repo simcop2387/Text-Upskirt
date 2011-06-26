@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 sub new {
-  bless {}; # nothing fancy for us thank you very much!
+  bless []; # nothing fancy for us thank you very much!
 }
 
 sub blockcode {
@@ -19,7 +19,7 @@ sub blockquote {
 
 sub blockhtml {
   my ($self, $html) = @_;
-  return $text;
+  return $html;
 }
 
 sub header {
