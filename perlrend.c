@@ -60,25 +60,23 @@
                                                 \
   PUTBACK;                                      \
   FREETMPS;                                     \
-  LEAVE;                                        \
-}
-
+  LEAVE;
 
 #define PERLREND_TXT(XMETH) \
-  void perlrndr_ ##XMETH (struct buf *ob, struct buf *text, void *opaque) { \
+  perlrndr_ ##XMETH (struct buf *ob, struct buf *text, void *opaque) { \
   PERLREND_START \
   XPUSHs(sv_2mortal(newSVpv(text->data, text->size))); \
   PERLREND_END(XMETH)
 
 #define PERLREND_TXTTXT(XMETH) \
-  void perlrndr_ ##XMETH (struct buf *ob, struct buf *text, struct buf *text2, void *opaque) { \
+  perlrndr_ ##XMETH (struct buf *ob, struct buf *text, struct buf *text2, void *opaque) { \
   PERLREND_START \
   XPUSHs(sv_2mortal(newSVpv(text->data, text->size))); \
   XPUSHs(sv_2mortal(newSVpv(text2->data, text2->size))); \
   PERLREND_END(XMETH)
 
 #define PERLREND_TXTTXTTXT(XMETH) \
-  void perlrndr_ ##XMETH (struct buf *ob, struct buf *text, struct buf *text2, struct buf *text3, void *opaque) { \
+  perlrndr_ ##XMETH (struct buf *ob, struct buf *text, struct buf *text2, struct buf *text3, void *opaque) { \
   PERLREND_START \
   XPUSHs(sv_2mortal(newSVpv(text->data, text->size))); \
   XPUSHs(sv_2mortal(newSVpv(text2->data, text2->size))); \
@@ -86,45 +84,139 @@
   PERLREND_END(XMETH)
 
 #define PERLREND_TXTINT(XMETH) \
-  void perlrndr_ ##XMETH (struct buf *ob, struct buf *text, int numb, void *opaque) { \
+  perlrndr_ ##XMETH (struct buf *ob, struct buf *text, int numb, void *opaque) { \
   PERLREND_START \
   XPUSHs(sv_2mortal(newSVpv(text->data, text->size))); \
   XPUSHs(sv_2mortal(newSViv(numb))); \
   PERLREND_END(XMETH)
 
 #define PERLREND_NONE(XMETH) \
-  void perlrndr_ ##XMETH (struct buf *ob, void *opaque) { \
+  perlrndr_ ##XMETH (struct buf *ob, void *opaque) { \
   PERLREND_START \
   PERLREND_END(XMETH)
 
-PERLREND_TXTTXT(blockcode);
-PERLREND_TXT(blockquote);
-PERLREND_TXT(blockhtml);
-PERLREND_TXTINT(header);
-PERLREND_NONE(hrule);
-PERLREND_TXTINT(list);
-PERLREND_TXTINT(listitem);
-PERLREND_TXT(paragraph);
-PERLREND_TXT(table);
-PERLREND_TXTINT(tablecell);
-PERLREND_TXT(tablerow);
+#define PERLREND_INTEND return 1; }
+#define PERLREND_VOIDEND }
 
-void perlrndr_autolink(struct buf *ob, struct buf *text, enum mkd_autolink type, void *opaque) { \
-  PERLREND_START \
-  XPUSHs(sv_2mortal(newSVpv(text->data, text->size))); \
-  XPUSHs(sv_2mortal(newSViv(type))); \
+// block level
+void PERLREND_TXTTXT(blockcode)
+     PERLEND_VOIDEND
+
+void PERLREND_TXT(blockquote)
+     PERLEND_VOIDEND
+
+void PERLREND_TXT(blockhtml)
+     PERLEND_VOIDEND
+
+void PERLREND_TXTINT(header)
+     PERLEND_VOIDEND
+
+void PERLREND_NONE(hrule)
+     PERLEND_VOIDEND
+
+void PERLREND_TXTINT(list)
+     PERLEND_VOIDEND
+
+void PERLREND_TXTINT(listitem)
+     PERLEND_VOIDEND
+
+void PERLREND_TXT(paragraph)
+     PERLEND_VOIDEND
+
+void PERLREND_TXT(table)
+     PERLEND_VOIDEND
+
+void PERLREND_TXTINT(tablecell)
+     PERLEND_VOIDEND
+
+void PERLREND_TXT(tablerow)
+     PERLEND_VOIDEND
+
+// span level
+int perlrndr_autolink(struct buf *ob, struct buf *text, enum mkd_autolink type, void *opaque) {
+  PERLREND_START
+  XPUSHs(sv_2mortal(newSVpv(text->data, text->size)));
+  XPUSHs(sv_2mortal(newSViv(type)));
   PERLREND_END(autolink)
+  PERLREND_INTEND
 
-PERLREND_TXT(codespan);
-PERLREND_TXT(double_emphasis);
-PERLREND_TXT(emphasis);
-PERLREND_TXTTXTTXT(image);
-PERLREND_NONE(linebreak);
-PERLREND_TXTTXTTXT(link);
-PERLREND_TXT(raw_html_tag);
-PERLREND_TXT(triple_emphasis);
-PERLREND_TXT(strikethrough);
-PERLREND_TXT(entity);
-PERLREND_TXT(normal_text);
-PERLREND_NONE(doc_header);
-PERLREND_NONE(doc_footer);
+int PERLREND_TXT(codespan)
+    PERLREND_INTEND
+
+int PERLREND_TXT(double_emphasis)
+    PERLREND_INTEND
+    
+int PERLREND_TXT(emphasis)
+    PERLREND_INTEND
+    
+int PERLREND_TXTTXTTXT(image)
+    PERLREND_INTEND
+    
+int PERLREND_NONE(linebreak)
+    PERLREND_INTEND
+    
+int PERLREND_TXTTXTTXT(link)
+    PERLREND_INTEND
+    
+int PERLREND_TXT(raw_html_tag)
+    PERLREND_INTEND
+    
+int PERLREND_TXT(triple_emphasis)
+    PERLREND_INTEND
+    
+int PERLREND_TXT(strikethrough)
+    PERLREND_INTEND
+
+// low level
+void PERLREND_TXT(entity)
+     PERLREND_VOIDEND
+
+void PERLREND_TXT(normal_text)
+     PERLREND_VOIDEND
+
+
+void PERLREND_NONE(doc_header)
+     PERLREND_VOIDEND
+
+
+void PERLREND_NONE(doc_footer)
+     PERLREND_VOIDEND
+
+
+static const struct mkd_renderer perlrender_markdown = {
+  /* block level callbacks */
+  perlrndr_blockcode,
+  perlrndr_blockquote,
+  perlrndr_raw_block,
+  perlrndr_header,
+  perlrndr_hrule,
+  perlrndr_list,
+  perlrndr_listitem,
+  perlrndr_paragraph,
+  perlrndr_table,
+  perlrndr_tablerow,
+  perlrndr_tablecell,
+
+  /* span level callbacks */
+  perlrndr_autolink,
+  perlrndr_codespan,
+  perlrndr_double_emphasis,
+  perlrndr_emphasis,
+  perlrndr_image,
+  perlrndr_linebreak,
+  perlrndr_link,
+  perlrndr_raw_html,
+  perlrndr_triple_emphasis,
+  perlrndr_strikethrough,
+
+  /* low level callbacks */
+  perlrndr_entity,
+  perlrndr_normal_text,
+
+  /* header and footer */
+  perlrndr_doc_header,
+  perlrndr_doc_footer,
+
+  /* This will become the SV */
+  NULL
+};
