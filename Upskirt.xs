@@ -15,6 +15,10 @@ MODULE = Text::Upskirt		PACKAGE = Text::Upskirt
 
 INCLUDE: const-xs.inc
 
+BOOT:
+# boot the second XS file
+boot_Text__Upskirt__Renderer__GithubHTML(aTHX_ cv);
+      
 SV *markdown_default(input, extens = 0, html = 0)
     char *input
     unsigned int extens

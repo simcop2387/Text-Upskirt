@@ -124,7 +124,7 @@ void PERLREND_TXTINT(listitem)
 void PERLREND_TXT(paragraph)
      PERLREND_VOIDEND
 
-void PERLREND_TXT(table)
+void PERLREND_TXTTXT(table)
      PERLREND_VOIDEND
 
 void PERLREND_TXTINT(tablecell)

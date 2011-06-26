@@ -7,7 +7,6 @@ use 5.012003;
 use Carp;
 use Scalar::Util qw/blessed/;
 use Data::Dumper;
-use diagnostics;
 
 use constant {HTML_SKIP_HTML => (1 << 0),
               HTML_SKIP_STYLE => (1 << 1),
