@@ -53,11 +53,13 @@
   SPAGAIN;                                      \
                                                 \
   if (!count)                                   \
-    croak(#XMETH "failed to return a value");    \
+    croak(#XMETH "failed to return a value");   \
                                                 \
   out = POPs;                                   \
-  outstr = sv_2pvbyte(out, &len);               \
-  bufput(ob, outstr, len);                      \
+  if (SvOK(out)) {                              \
+    outstr = sv_2pvbyte(out, &len);             \
+    bufput(ob, outstr, len);                    \
+  }                                             \
                                                 \
   PUTBACK;                                      \
   FREETMPS;                                     \
@@ -98,7 +100,7 @@
   PERLREND_START \
   PERLREND_END(XMETH)
 
-#define PERLREND_INTEND return 1; }
+#define PERLREND_INTEND if (SvOK(out)) {return 1;} else {return 0;}}
 #define PERLREND_VOIDEND }
 
 // block level
