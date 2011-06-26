@@ -63,31 +63,33 @@
   FREETMPS;                                     \
   LEAVE;
 
+#define BUF_OR_UNDEF(p) (p != 0) ? sv_2mortal(newSVpv(p->data, p->size)) : &PL_sv_undef
+
 #define PERLREND_TXT(XMETH) \
   perlrndr_ ##XMETH (struct buf *ob, struct buf *text, void *opaque) { \
   PERLREND_START \
-  XPUSHs(sv_2mortal(newSVpv(text->data, text->size))); \
+  XPUSHs(BUF_OR_UNDEF(text)); \
   PERLREND_END(XMETH)
 
 #define PERLREND_TXTTXT(XMETH) \
   perlrndr_ ##XMETH (struct buf *ob, struct buf *text, struct buf *text2, void *opaque) { \
   PERLREND_START \
-  XPUSHs(sv_2mortal(newSVpv(text->data, text->size))); \
-  XPUSHs(sv_2mortal(newSVpv(text2->data, text2->size))); \
+  XPUSHs(BUF_OR_UNDEF(text)); \
+  XPUSHs(BUF_OR_UNDEF(text2)); \
   PERLREND_END(XMETH)
 
 #define PERLREND_TXTTXTTXT(XMETH) \
   perlrndr_ ##XMETH (struct buf *ob, struct buf *text, struct buf *text2, struct buf *text3, void *opaque) { \
   PERLREND_START \
-  XPUSHs(sv_2mortal(newSVpv(text->data, text->size))); \
-  XPUSHs(sv_2mortal(newSVpv(text2->data, text2->size))); \
-  XPUSHs(sv_2mortal(newSVpv(text3->data, text3->size))); \
+  XPUSHs(BUF_OR_UNDEF(text)); \
+  XPUSHs(BUF_OR_UNDEF(text2)); \
+  XPUSHs(BUF_OR_UNDEF(text3)); \
   PERLREND_END(XMETH)
 
 #define PERLREND_TXTINT(XMETH) \
   perlrndr_ ##XMETH (struct buf *ob, struct buf *text, int numb, void *opaque) { \
   PERLREND_START \
-  XPUSHs(sv_2mortal(newSVpv(text->data, text->size))); \
+  XPUSHs(BUF_OR_UNDEF(text)); \
   XPUSHs(sv_2mortal(newSViv(numb))); \
   PERLREND_END(XMETH)
 
@@ -155,9 +157,12 @@ int PERLREND_TXTTXTTXT(image)
     
 int PERLREND_NONE(linebreak)
     PERLREND_INTEND
-    
+
 int PERLREND_TXTTXTTXT(link)
     PERLREND_INTEND
+    
+//int PERLREND_TXTTXTTXT(link)
+//    PERLREND_INTEND
     
 int PERLREND_TXT(raw_html_tag)
     PERLREND_INTEND

@@ -4,6 +4,8 @@ use strict;
 use warnings;
 
 use Text::Upskirt; # bootstraps Bar.xs
+use Text::Upskirt::Renderer;
+use base 'Text::Upskirt::Renderer';
 
 sub new {
   my ($class, $flags) = @_;
