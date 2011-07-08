@@ -13,7 +13,32 @@ use Data::Dumper;
 use Test::More tests => 4;
 BEGIN { use_ok('Text::Upskirt'); use_ok('Text::Upskirt::Renderer'); };
 
-my $render = Text::Upskirt::Renderer->new();
+{package Text::Upskirt::Renderer::Strip;
+ use Moose;
+ extends 'Text::Upskirt::Renderer';
+
+ sub header {
+   my ($self, $text) = @_;
+   return $text;
+ }
+
+ sub list {
+   my ($self, $text) = @_;
+   return $text;
+ }
+
+ sub listitem {
+   my ($self, $text) = @_;
+   return $text;
+ }
+
+ sub normal_text {
+   my ($self, $text) = @_;
+   return $text;
+ }
+}
+
+my $render = Text::Upskirt::Renderer::Strip->new();
 ok(defined $render);
 
 my $out = Text::Upskirt::markdown($render, << 'EOF');
@@ -32,5 +57,7 @@ Three
 EOF
 
 ok($out eq $rend);
+
+print $out;
 
 # short basic test, to see if it works

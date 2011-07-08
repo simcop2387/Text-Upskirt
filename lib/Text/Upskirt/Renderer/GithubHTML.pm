@@ -5,15 +5,13 @@ use warnings;
 
 use Text::Upskirt; # bootstraps Bar.xs
 use Text::Upskirt::Renderer;
-use base 'Text::Upskirt::Renderer';
+use Devel::Peek;
 
-sub new {
-  my ($class, $flags) = @_;
-  # more of that same issue
-  no warnings 'uninitialized';
-  my $pointer = _newrend($flags);
+use Moose;
 
-  bless {_html => $pointer};
-}
+extends 'Text::Upskirt::Renderer';
+
+has 'flags' => (is => 'ro');
+has '_html' => (is => 'rw');
 
 1;

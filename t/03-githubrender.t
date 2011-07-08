@@ -11,10 +11,13 @@ use warnings;
 use Data::Dumper;
 
 use Test::More tests => 5;
-BEGIN { use_ok('Text::Upskirt'); use_ok('Text::Upskirt::Renderer'); use_ok('Text::Upskirt::Renderer::GithubHTML'); };
+BEGIN { use_ok('Text::Upskirt'); use_ok('Text::Upskirt::Renderer'); use_ok('Text::Upskirt::Renderer::GithubHTML'); use_ok('Text::Upskirt::Renderer::Test');};
 
-my $ghrend = Text::Upskirt::Renderer::GithubHTML->new();
+my $ghrend = Text::Upskirt::Renderer::GithubHTML->new({flags => 0});
 ok(defined $ghrend);
+
+#my $testrend = Text::Upskirt::Renderer::Test->new();
+#ok(defined $testrend);
 
 my $doc = << 'EOF';
 Markdown: Syntax
@@ -927,10 +930,18 @@ Markdown provides backslash escapes for the following characters:
 EOF
 
 my $standard = Text::Upskirt::markdown($doc);
-my $complex = Text::Upskirt::markdown($ghrend, $doc);
+my $complex = Text::Upskirt::markdown_custom($ghrend, $doc);
+#my $tester = Text::Upskirt::markdown_custom($testrend, $doc);
 
 ok($standard eq $complex);
 
-print STDERR Dumper($standard, $complex);
+open(my $t1, ">standard.html") or die "$!";
+open(my $t2, ">complex.html") or die "$!";
+#open(my $t3, ">tester.html") or die "$!";
+
+print $t1 $standard;
+print $t2 $complex;
+#print $t3 $tester;
+
 
 # short basic test, to see if it works

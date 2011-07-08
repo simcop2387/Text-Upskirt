@@ -35,7 +35,7 @@
   SV *obj = (SV *) opaque;                      \
   SV *out;                                      \
   char *outstr;                                 \
-  STRLEN len;                                      \
+  STRLEN len;                                   \
   int count;                                    \
                                                 \
   /* setup the stack */                         \
@@ -162,9 +162,6 @@ int PERLREND_NONE(linebreak)
 
 int PERLREND_TXTTXTTXT(link)
     PERLREND_INTEND
-    
-//int PERLREND_TXTTXTTXT(link)
-//    PERLREND_INTEND
     
 int PERLREND_TXT(raw_html_tag)
     PERLREND_INTEND
