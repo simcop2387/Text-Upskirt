@@ -24,6 +24,7 @@
 #include "html.h"
 #include "buffer.h"
 #include "perlrend.h"
+#include "dump.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -56,14 +57,12 @@
     croak(#XMETH "failed to return a value");   \
                                                 \
   out = POPs;                                   \
+  printf(#XMETH ":< \n");                       \
+  DoDump(out);                                  \
   if (SvOK(out)) {                              \
     outstr = sv_2pvbyte(out, &len);             \
     bufput(ob, outstr, len);                    \
-  }                                             \
-                                                \
-  PUTBACK;                                      \
-  FREETMPS;                                     \
-  LEAVE;
+  }
 
 #define BUF_OR_UNDEF(p) (p != 0) ? sv_2mortal(newSVpv(p->data, p->size)) : &PL_sv_undef
 
@@ -100,8 +99,15 @@
   PERLREND_START \
   PERLREND_END(XMETH)
 
-#define PERLREND_INTEND if (SvOK(out)) {return 1;} else {return 0;}}
-#define PERLREND_VOIDEND }
+#define PERLREND_INTEND if (SvOK(out)) {return 1;} else {return 0;} \
+                        PUTBACK;                                    \
+                        FREETMPS;                                   \
+                        LEAVE;                                      \
+                        }
+#define PERLREND_VOIDEND PUTBACK;                                    \
+                         FREETMPS;                                   \
+                         LEAVE;                                      \
+                         }
 
 // block level
 void PERLREND_TXTTXT(blockcode)

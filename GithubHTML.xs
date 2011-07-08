@@ -59,7 +59,8 @@
                           struct buf *ob = bufnew(1); \
                           int methret;
 
-#define GH_RNDR_INT_END(__meth) if (methret) {\
+#define GH_RNDR_INT_END(__meth) printf(#__meth ":> COCKS %d\n", methret); \
+                          if (methret) {\
                           RETVAL = newSVpv(ob->data, ob->size);          \
                         } else \
                           RETVAL = &PL_sv_undef; \
@@ -90,6 +91,7 @@
                             bufputs(ib2, text2); \
                             bufputs(ib3, text3); \
                             methret = gitrend->__meth(ob, ib, ib2, ib3, gitrend->opaque); \
+                            printf("TXTTXTTXT\n"); \
                             GH_RNDR_INT_END(__meth) \
                             bufrelease(ib); \
                             bufrelease(ib2); \
@@ -174,6 +176,10 @@ void *GithubHTML_get__html(SV *self) {
   else
     croak("Invalid GithubHTML data");
 
+  PUTBACK;
+  FREETMPS;
+  LEAVE;
+  
   return NULL; // how the fuck did we get here?
 }
 

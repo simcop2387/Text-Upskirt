@@ -17,6 +17,12 @@ BEGIN { use_ok('Text::Upskirt'); use_ok('Text::Upskirt::Renderer'); };
  use Moose;
  extends 'Text::Upskirt::Renderer';
 
+ sub link {
+   my ($self, $text, $text2, $text3) = @_;
+   #print "$text :: $text2 :: $text3";
+   return "link";
+  }
+
  sub header {
    my ($self, $text) = @_;
    return $text;
