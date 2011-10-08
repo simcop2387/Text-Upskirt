@@ -35,9 +35,11 @@
   dSP;                                          \
   SV *obj = (SV *) opaque;                      \
   SV *out;                                      \
+  SV *outref;                                   \
   char *outstr;                                 \
   STRLEN len;                                   \
   int count;                                    \
+  int retval = 0;                               \
                                                 \
   /* setup the stack */                         \
   ENTER;                                        \
@@ -48,7 +50,7 @@
 
 #define PERLREND_END(XMETH)   PUTBACK;          \
                                                 \
-  count = call_method(#XMETH , G_SCALAR);       \
+  count = call_method(#XMETH, G_ARRAY);         \
                                                 \
   /* pull the stack off */                      \
   SPAGAIN;                                      \
@@ -56,13 +58,23 @@
   if (!count)                                   \
     croak(#XMETH "failed to return a value");   \
                                                 \
-  out = POPs;                                   \
-  printf(#XMETH ":< \n");                       \
-  DoDump(out);                                  \
+  outref = POPs;                                \
+  if (SvROK(outref)) {                          \
+    AV *arr = (AV *) SvRV(outref);              \
+    SV *val = av_pop(arr);                      \
+    SV *text = av_pop(arr);                     \
+    retval = SvIV(val);                         \
+    out = text;                                 \
+  } else {                                      \
+    out = outref;                               \
+  }                                             \
   if (SvOK(out)) {                              \
     outstr = sv_2pvbyte(out, &len);             \
     bufput(ob, outstr, len);                    \
-  }
+  }                                             \
+  PUTBACK;                                      \
+  FREETMPS;                                     \
+  LEAVE;
 
 #define BUF_OR_UNDEF(p) (p != 0) ? sv_2mortal(newSVpv(p->data, p->size)) : &PL_sv_undef
 
@@ -99,15 +111,8 @@
   PERLREND_START \
   PERLREND_END(XMETH)
 
-#define PERLREND_INTEND if (SvOK(out)) {return 1;} else {return 0;} \
-                        PUTBACK;                                    \
-                        FREETMPS;                                   \
-                        LEAVE;                                      \
-                        }
-#define PERLREND_VOIDEND PUTBACK;                                    \
-                         FREETMPS;                                   \
-                         LEAVE;                                      \
-                         }
+#define PERLREND_INTEND return retval; }
+#define PERLREND_VOIDEND }
 
 // block level
 void PERLREND_TXTTXT(blockcode)

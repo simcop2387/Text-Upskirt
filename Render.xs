@@ -6,6 +6,7 @@
 #include "html.h"
 #include "buffer.h"
 #include "perlrend.h"
+#include "trace_wrap.h"
 
 #define CAN(method) if (!docan(self, #method)) {rendp->method = NULL;}
 
@@ -50,6 +51,8 @@ struct mkd_renderer *TUR_get__rendp(SV *const self) {
 
   count = call_method("_rendp", G_SCALAR);
 
+  SPAGAIN;
+
   if (!count)
     croak("Failed to get rendering context");
 
@@ -72,6 +75,7 @@ void tur_BUILD(self, ...)
   SV *self
   CODE:
     struct mkd_renderer *rendp = malloc(sizeof(struct mkd_renderer));
+    struct mkd_renderer *wrap;
     *rendp = perlrender_markdown;
     //printf("INBUILD: %08X %08X\n", self, rendp);
     CAN(blockcode);
@@ -102,9 +106,11 @@ void tur_BUILD(self, ...)
 
     rendp->opaque = (void *) self;
 
+    wrap = trace_wrap(rendp);
+
     PUSHMARK(SP);
     XPUSHs(self);
-    XPUSHs(newSVuv((UV) rendp));
+    XPUSHs(newSVuv((UV) wrap));
     PUTBACK;
 
     call_method("_rendp", G_DISCARD);

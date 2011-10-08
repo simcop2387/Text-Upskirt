@@ -23,6 +23,8 @@ struct mkd_renderer *TU_get_rendp(SV *const self) {
 
   count = call_method("_rendp", G_SCALAR);
 
+  SPAGAIN;
+
   if (!count)
     croak("Failed to get rendering context");
 

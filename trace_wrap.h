@@ -1,0 +1,1 @@
+struct mkd_renderer *trace_wrap(struct mkd_renderer *orig);

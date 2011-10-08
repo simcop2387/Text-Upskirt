@@ -936,11 +936,11 @@ my $complex = Text::Upskirt::markdown_custom($ghrend, $doc);
 #ok($standard eq $complex);
 
 open(my $t1, ">standard.html") or die "$!";
-#open(my $t2, ">complex.html") or die "$!";
+open(my $t2, ">complex.html") or die "$!";
 #open(my $t3, ">tester.html") or die "$!";
 
 print $t1 $standard;
-#print $t2 $complex;
+print $t2 $complex;
 #print $t3 $tester;
 
 

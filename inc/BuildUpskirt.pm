@@ -9,7 +9,7 @@ extends 'Dist::Zilla::Plugin::MakeMaker::Awesome';
         # Add LIBS => to WriteMakefile() args
         %{ super() },
         CCFLAGS => '-ggdb',
-        OBJECT => 'html.o markdown.o buffer.o autolink.o array.o html_smartypants.o perlrend.o Render.o GithubHTML.o dump.o $(BASEEXT)$(OBJ_EXT)',
+        OBJECT => 'trace_wrap.o html.o markdown.o buffer.o autolink.o array.o html_smartypants.o perlrend.o Render.o GithubHTML.o dump.o $(BASEEXT)$(OBJ_EXT)',
     } };
 
 1;
